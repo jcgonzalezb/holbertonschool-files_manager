@@ -110,7 +110,7 @@ Inside controllers, add a file UsersController.js that contains the new endpoint
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
-	To create a file, you must specify:
+- To create a file, you must specify:
 	- name: as filename
 	- type: either folder, file or image
 	- parentId: (optional) as ID of the parent (default: 0 -> the root)
