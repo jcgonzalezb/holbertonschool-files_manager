@@ -13,11 +13,11 @@
 - an asynchronous function set that takes a string key, a value and a duration in second as arguments to store it in Redis (with an expiration set by the duration argument)
 - an asynchronous function del that takes a string key as argument and remove the value in Redis for this key
 
-After the class definition, create and export an instance of RedisClient called redisClient.
+	After the class definition, create and export an instance of RedisClient called redisClient.
 
 1. Inside the folder utils, create a file db.js that contains the class DBClient.
 
-DBClient should have:
+	DBClient should have:
 
 - the constructor that creates a client to MongoDB:
 	- host: from the environment variable DB_HOST or default: localhost
@@ -27,19 +27,19 @@ DBClient should have:
 - an asynchronous function nbUsers that returns the number of documents in the collection users
 - an asynchronous function nbFiles that returns the number of documents in the collection files
 
-After the class definition, create and export an instance of DBClient called dbClient.
+	After the class definition, create and export an instance of DBClient called dbClient.
 
 2. Inside server.js, create the Express server:
 
 - it should listen on the port set by the environment variable PORT or by default 5000
 - it should load all routes from the file routes/index.js
 
-Inside the folder routes, create a file index.js that contains all endpoints of our API:
+	Inside the folder routes, create a file index.js that contains all endpoints of our API:
 
 - GET /status => AppController.getStatus
 - GET /stats => AppController.getStats
 
-Inside the folder controllers, create a file AppController.js that contains the definition of the 2 endpoints:
+	Inside the folder controllers, create a file AppController.js that contains the definition of the 2 endpoints:
 
 - GET /status should return if Redis is alive and if the DB is alive too by using the 2 utils created previously: { "redis": true, "db": true } with a status code 200
 - GET /stats should return the number of users and files in DB: { "users": 12, "files": 1231 } with a status code 200
@@ -48,12 +48,12 @@ Inside the folder controllers, create a file AppController.js that contains the 
 
 3. Now that we have a simple API, it’s time to add users to our database.
 
-In the file routes/index.js, add a new endpoint:
+	In the file routes/index.js, add a new endpoint:
 
 - POST /users => UsersController.postNew
 Inside controllers, add a file UsersController.js that contains the new endpoint:
 
-POST /users should create a new user in DB:
+	POST /users should create a new user in DB:
 
 - To create a user, you must specify an email and a password
 - If the email is missing, return an error Missing email with a status code 400
@@ -71,9 +71,9 @@ POST /users should create a new user in DB:
 - GET /disconnect => AuthController.getDisconnect
 - GET /users/me => UserController.getMe
 
-Inside controllers, add a file AuthController.js that contains new endpoints:
+	Inside controllers, add a file AuthController.js that contains new endpoints:
 
-GET /connect should sign-in the user by generating a new authentication token:
+	GET /connect should sign-in the user by generating a new authentication token:
 
 - By using the header Authorization and the technique of the Basic auth (Base64 of the email:password), find the user associate to this email and with this password (reminder: we are storing the SHA1 of the password)
 - If no user has been found, return an error Unauthorized with a status code 401
@@ -83,19 +83,19 @@ GET /connect should sign-in the user by generating a new authentication token:
 	- Use this key for storing in Redis (by using the redisClient create previously) the user ID for 24 hours
 	- Return this token: { "token": "155342df-2399-41da-9e8c-458b6ac52a0c" } with a status code 200
 
-Now, we have a way to identify a user, create a token (= avoid to store the password on any front-end) and use this token for 24h to access to the API!
+	Now, we have a way to identify a user, create a token (= avoid to store the password on any front-end) and use this token for 24h to access to the API!
 
-Every authenticated endpoints of our API will look at this token inside the header X-Token.
+	Every authenticated endpoints of our API will look at this token inside the header X-Token.
 
-GET /disconnect should sign-out the user based on the token:
+	GET /disconnect should sign-out the user based on the token:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
 	- Otherwise, delete the token in Redis and return nothing with a status code 204
 
-Inside the file controllers/UsersController.js add a new endpoint:
+	Inside the file controllers/UsersController.js add a new endpoint:
 
-GET /users/me should retrieve the user base on the token used:
+	GET /users/me should retrieve the user base on the token used:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
@@ -104,13 +104,13 @@ GET /users/me should retrieve the user base on the token used:
 5. In the file routes/index.js, add a new endpoint:
 
 - POST /files => FilesController.postUpload
-Inside controllers, add a file FilesController.js that contains the new endpoint:
+	Inside controllers, add a file FilesController.js that contains the new endpoint:
 
-POST /files should create a new file in DB and in disk:
+	POST /files should create a new file in DB and in disk:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
-To create a file, you must specify:
+	To create a file, you must specify:
 	- name: as filename
 	- type: either folder, file or image
 	- parentId: (optional) as ID of the parent (default: 0 -> the root)
@@ -125,7 +125,7 @@ To create a file, you must specify:
 - The user ID should be added to the document saved in DB - as owner of a file
 - If the type is folder, add the new file document in the DB and return the new file with a status code 201
 
-Otherwise:
+	Otherwise:
 - All file will be stored locally in a folder (to create automatically if not present):
 	- The relative path of this folder is given by the environment variable FOLDER_PATH
 	- If this variable is not present or empty, use /tmp/files_manager as storing folder path
@@ -145,16 +145,16 @@ Otherwise:
 - GET /files/:id => FilesController.getShow
 - GET /files => FilesController.getIndex
 
-In the file controllers/FilesController.js, add the 2 new endpoints:
+	In the file controllers/FilesController.js, add the 2 new endpoints:
 
-GET /files/:id should retrieve the file document based on the ID:
+	GET /files/:id should retrieve the file document based on the ID:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
 - If no file document is linked to the user and the ID passed as parameter, return an error Not found with a status code 404
 - Otherwise, return the file document
 
-GET /files should retrieve all users file documents for a specific parentId and with pagination:
+	GET /files should retrieve all users file documents for a specific parentId and with pagination:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
@@ -167,16 +167,13 @@ GET /files should retrieve all users file documents for a specific parentId and 
 	- page query parameter starts at 0 for the first page. If equals to 1, it means it’s the second page (form the 20th to the 40th), etc…
 	- Pagination can be done directly by the aggregate of MongoDB
 
-7. 
-
-
-In the file routes/index.js, add 2 new endpoints:
+7. In the file routes/index.js, add 2 new endpoints:
 
 - PUT /files/:id/publish => FilesController.putPublish
 - PUT /files/:id/publish => FilesController.putUnpublish
-In the file controllers/FilesController.js, add the 2 new endpoints:
+	In the file controllers/FilesController.js, add the 2 new endpoints:
 
-PUT /files/:id/publish should set isPublic to true on the file document based on the ID:
+	PUT /files/:id/publish should set isPublic to true on the file document based on the ID:
 
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
@@ -196,9 +193,9 @@ PUT /files/:id/unpublish should set isPublic to false on the file document based
 8. In the file routes/index.js, add one new endpoint:
 
 - GET /files/:id/data => FilesController.getFile
-In the file controllers/FilesController.js, add the new endpoint:
+	In the file controllers/FilesController.js, add the new endpoint:
 
-GET /files/:id/data should return the content of the file document based on the ID:
+	GET /files/:id/data should return the content of the file document based on the ID:
 
 - If no file document is linked to the ID passed as parameter, return an error Not found with a status code 404
 - If the file document (folder or file) is not public (isPublic: false) and no user authenticate or not the owner of the file, return an error Not found with a status code 404
@@ -213,7 +210,7 @@ GET /files/:id/data should return the content of the file document based on the 
 - Create a Bull queue fileQueue
 - When a new image is stored (in local and in DB), add a job to this queue with the userId and fileId
 
-Create a file worker.js:
+	Create a file worker.js:
 
 - By using the module Bull, create a queue fileQueue
 - Process this queue:
@@ -222,7 +219,7 @@ Create a file worker.js:
 - If no document is found in DB based on the fileId and userId, raise an error File not found
 - By using the module image-thumbnail, generate 3 thumbnails with width = 500, 250 and 100 - store each result on the same location of the original file by appending _width size
 
-Update the endpoint GET /files/:id/data to accept a query parameter size:
+	Update the endpoint GET /files/:id/data to accept a query parameter size:
 
 - size can be 500, 250 or 100
 - Based on size, return the correct local file
