@@ -1,3 +1,4 @@
+/* eslint-disable */
 import express from 'express';
 
 const routes = require('./routes/index');
