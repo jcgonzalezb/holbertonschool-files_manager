@@ -159,13 +159,13 @@ Inside controllers, add a file UsersController.js that contains the new endpoint
 - Retrieve the user based on the token:
 	- If not found, return an error Unauthorized with a status code 401
 - Based on the query parameters parentId and page, return the list of file document
-- parentId:
-	- No validation of parentId needed - if the parentId is not linked to any user folder, returns an empty list
-	- By default, parentId is equal to 0 = the root
-- Pagination:
-	- Each page should be 20 items max
-	- page query parameter starts at 0 for the first page. If equals to 1, it means it’s the second page (form the 20th to the 40th), etc…
-	- Pagination can be done directly by the aggregate of MongoDB
+	- parentId:
+		- No validation of parentId needed - if the parentId is not linked to any user folder, returns an empty list
+		- By default, parentId is equal to 0 = the root
+	- Pagination:
+		- Each page should be 20 items max
+		- page query parameter starts at 0 for the first page. If equals to 1, it means it’s the second page (form the 20th to the 40th), etc…
+		- Pagination can be done directly by the aggregate of MongoDB
 
 7. In the file routes/index.js, add 2 new endpoints:
 
