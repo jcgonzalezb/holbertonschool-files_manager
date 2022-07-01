@@ -194,6 +194,7 @@ PUT /files/:id/unpublish should set isPublic to false on the file document based
 8. In the file routes/index.js, add one new endpoint:
 
 - GET /files/:id/data => FilesController.getFile
+
 	In the file controllers/FilesController.js, add the new endpoint:
 
 	GET /files/:id/data should return the content of the file document based on the ID:
