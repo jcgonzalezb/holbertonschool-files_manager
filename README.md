@@ -125,20 +125,20 @@ Inside controllers, add a file UsersController.js that contains the new endpoint
 - The user ID should be added to the document saved in DB - as owner of a file
 - If the type is folder, add the new file document in the DB and return the new file with a status code 201
 
-	Otherwise:
-- All file will be stored locally in a folder (to create automatically if not present):
-	- The relative path of this folder is given by the environment variable FOLDER_PATH
-	- If this variable is not present or empty, use /tmp/files_manager as storing folder path
-- Create a local path in the storing folder with filename a UUID
-- Store the file in clear (reminder: data contains the Base64 of the file) in this local path
-- Add the new file document in the collection files with these attributes:
-	- userId: ID of the owner document (owner from the authentication)
-	- name: same as the value received
-	- type: same as the value received
-	- isPublic: same as the value received
-	- parentId: same as the value received - if not present: 0
-	- localPath: for a type=file|image, the absolute path to the file save in local
-- Return the new file with a status code 201
+- Otherwise:
+	- All file will be stored locally in a folder (to create automatically if not present):
+		- The relative path of this folder is given by the environment variable FOLDER_PATH
+		- If this variable is not present or empty, use /tmp/files_manager as storing folder path
+	- Create a local path in the storing folder with filename a UUID
+	- Store the file in clear (reminder: data contains the Base64 of the file) in this local path
+	- Add the new file document in the collection files with these attributes:
+		- userId: ID of the owner document (owner from the authentication)
+		- name: same as the value received
+		- type: same as the value received
+		- isPublic: same as the value received
+		- parentId: same as the value received - if not present: 0
+		- localPath: for a type=file|image, the absolute path to the file save in local
+	- Return the new file with a status code 201
 
 6. In the file routes/index.js, add 2 new endpoints:
 
