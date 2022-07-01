@@ -1,3 +1,4 @@
+/* eslint-disable */
 import sha1 from 'sha1';
 import Queue from 'bull';
 import { findUserById, findUserIdByToken } from '../utils/helpers';
