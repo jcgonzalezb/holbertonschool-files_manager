@@ -171,6 +171,7 @@ Inside controllers, add a file UsersController.js that contains the new endpoint
 
 - PUT /files/:id/publish => FilesController.putPublish
 - PUT /files/:id/publish => FilesController.putUnpublish
+
 	In the file controllers/FilesController.js, add the 2 new endpoints:
 
 	PUT /files/:id/publish should set isPublic to true on the file document based on the ID:
